@@ -27,7 +27,7 @@
     const dispatchCancel = createEventDispatcher();
 
     let isOpen = false;
-    let isScanning = false;
+    let isScanningPaused = true;
     let accordionValue = "";
 
     let openFoodFactsApi = new OpenFoodFactsApi();
@@ -117,11 +117,11 @@
     };
 
     const startScanning = () => {
-        isScanning = true;
+        isScanningPaused = false;
     };
 
     const stopScanning = () => {
-        isScanning = false;
+        isScanningPaused = true;
     };
 
     const handleAdd = () => {
@@ -196,7 +196,7 @@
                             />
                         </div>
 
-                        {#if isScanning}
+                        {#if !isScanningPaused}
                             <Button
                                 variant="secondary"
                                 class="mt-1 flex items-center"
@@ -237,13 +237,14 @@
                         </Button>
                     </div>
 
-                    {#if isScanning}
+                    {#if !isScanningPaused}
                         <QrCodeScanner
                             on:detect={(e) => handleScanSuccess(e)}
-                            paused={!isScanning}
-                            width={569}
+                            bind:paused={isScanningPaused}
+                            width={320}
                             height={320}
                             class="w-full max-w-sm mx-auto"
+                            
                         />
                     {/if}
                 </div>
