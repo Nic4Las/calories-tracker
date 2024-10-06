@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, createEventDispatcher } from "svelte";
+  import { onMount, createEventDispatcher, onDestroy } from "svelte";
   import {
     Html5QrcodeScanner,
     type Html5QrcodeResult,
@@ -46,6 +46,8 @@
     decodedResult: Html5QrcodeResult,
   ): void {
     dispatch("detect", { decodedText });
+    scanner?.clear();
+    scanner = null;
   }
 
   // usually better to ignore and keep scanning
@@ -53,7 +55,7 @@
     dispatch("error", { message });
   }
 
-  let scanner: Html5QrcodeScanner;
+  let scanner: Html5QrcodeScanner|null = null;
   onMount(() => {
     scanner = new Html5QrcodeScanner(
       "qr-scanner",
@@ -67,6 +69,14 @@
       false, // non-verbose
     );
     scanner.render(onScanSuccess, onScanFailure);
+
+    console.log("Scanner initialized");
+  });
+
+  onDestroy(() => {
+    scanner?.clear();
+    scanner = null;
+    console.log("Scanner destroyed");
   });
 
   // pause/resume scanner to avoid unintended scans
