@@ -160,8 +160,8 @@
         }>,
     ) => {
         code = e.detail.decodedText;
-        getOpenFoodFacts(code);
         stopScanning();
+        getOpenFoodFacts(code);
     };
 </script>
 
@@ -241,7 +241,7 @@
                         <QrCodeScanner
                             on:detect={(e) => handleScanSuccess(e)}
                             paused={!isScanning}
-                            width={320}
+                            width={569}
                             height={320}
                             class="w-full max-w-sm mx-auto"
                         />

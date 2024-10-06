@@ -46,7 +46,6 @@
     decodedResult: Html5QrcodeResult,
   ): void {
     dispatch("detect", { decodedText });
-    scanner?.pause();
   }
 
   // usually better to ignore and keep scanning
